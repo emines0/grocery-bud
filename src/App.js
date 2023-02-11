@@ -27,6 +27,21 @@ function App() {
        * if there is something in the name but is editing
        * deal with edit
        */
+      setList(
+        list.map((item) => {
+          if (item.id === editID) {
+            return { ...item, title: name }
+            /*
+             * return all what is in item but change title to name
+             */
+          }
+          return item
+        })
+      )
+      setName('')
+      setEditID(null)
+      setIsEditing(false)
+      showAlert(true, 'success', 'item edited')
     } else {
       /*
        * if there existing value in the name
@@ -63,10 +78,26 @@ function App() {
      * return only ids which doesn't match
      */
   }
+
+  const editItem = (id) => {
+    const specificItem = list.find((item) => item.id === id)
+    /*
+     * return item from list when item.id = id
+     */
+    setIsEditing(true)
+    setEditID(id)
+    setName(specificItem.title)
+
+    /*
+     * setIsEditing to true to know that user is editing
+     * setEditId to id to kno which item is editing
+     * setName to current editing item
+     */
+  }
   return (
     <section className='section-center'>
       <form className='grocery-form' onSubmit={handleSubmit}>
-        {alert.show && <Alert {...alert} removeAlert={showAlert} />}
+        {alert.show && <Alert {...alert} removeAlert={showAlert} list={list} />}
         {/*
          * If alert.show is true display Alert component
          */}
@@ -91,7 +122,7 @@ function App() {
       </form>
       {list.length > 0 && (
         <div className='grocery-container'>
-          <List items={list} removeItem={removeItem} />
+          <List items={list} removeItem={removeItem} editItem={editItem} />
           <button className='clear-btn' onClick={clearList}>
             clear items
           </button>
