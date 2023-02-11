@@ -2,9 +2,22 @@ import React, { useState, useEffect } from 'react'
 import List from './List'
 import Alert from './Alert'
 
+const getLocalStorage = () => {
+  let list = localStorage.getItem('list')
+  if (list) {
+    return JSON.parse(localStorage.getItem('list'))
+  } else {
+    return []
+  }
+  /*
+   * if list exist return item list from the local storage
+   * if list doesn't exist return empty object
+   */
+}
+
 function App() {
   const [name, setName] = useState('')
-  const [list, setList] = useState([])
+  const [list, setList] = useState(getLocalStorage())
   const [isEditing, setIsEditing] = useState(false)
   const [editID, setEditID] = useState(null)
   const [alert, setAlert] = useState({
@@ -94,6 +107,13 @@ function App() {
      * setName to current editing item
      */
   }
+
+  useEffect(() => {
+    localStorage.setItem('list', JSON.stringify(list))
+  }, [list])
+  /*
+   * everytime if something change in the list change it in the local storage
+   */
   return (
     <section className='section-center'>
       <form className='grocery-form' onSubmit={handleSubmit}>

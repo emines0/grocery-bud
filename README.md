@@ -13,4 +13,5 @@
 - edit item
 - get editing item with function find
 - useState for editing
-- using local storage
+- using local storage useEffect when list changed
+- get item from local storage when app build
